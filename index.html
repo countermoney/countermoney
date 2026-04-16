@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Money American | Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0b0e11; color: #eaecef; font-family: sans-serif; margin: 0; }
+        .binance-yellow { color: #f3ba2f; }
+        .binance-bg { background-color: #f3ba2f; }
+        .card-dark { background-color: #1e2329; border: 1px solid #30363d; border-radius: 12px; }
+        .hidden-section { display: none !important; }
+        .modal-overlay { background: rgba(0,0,0,0.95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="modal-pagamento" class="modal-overlay hidden-section">
+        <div class="card-dark p-8 w-full max-w-sm text-center border-t-4 border-yellow-500 shadow-2xl">
+            <i class="fas fa-university binance-yellow text-4xl mb-4"></i>
+            <h3 class="text-white font-bold mb-2 uppercase">Dados de Depósito</h3>
+            <p class="text-gray-400 text-[11px] mb-6">Transfira o valor para o endereço abaixo.<br>Rede: <span class="binance-yellow font-bold">USDT (BEP20)</span></p>
+            
+            <div class="bg-black p-4 rounded border border-gray-800 mb-6">
+                <code id="wallet-addr" class="text-[10px] binance-yellow break-all">0xca70ef9db0233fef4449d9517c20f7bd21871b6f</code>
+            </div>
+
+            <button onclick="copiarWallet()" class="w-full binance-bg text-black font-bold py-3 rounded text-xs uppercase mb-3 hover:opacity-90">Copiar Endereço</button>
+            <button onclick="fecharModal()" class="w-full text-gray-500 text-[10px] uppercase font-bold tracking-widest">Fechar Janela</button>
+        </div>
+    </div>
+
+    <section id="tela-acesso" class="min-h-screen flex items-center justify-center p-5 bg-black">
+        <div class="card-dark p-10 w-full max-w-md text-center border-b-4 border-yellow-500">
+            <h1 class="text-3xl font-bold binance-yellow italic mb-2 tracking-tighter">COUNTER <span class="text-white">MONEY</span></h1>
+            <p class="text-gray-500 text-[10px] mb-8 uppercase tracking-[0.3em]">American Investment Group</p>
+            
+            <div id="msg-convite" class="hidden-section mb-6 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded text-[10px] binance-yellow font-bold uppercase">
+                Convidado por: <span id="ref-tag"></span>
+            </div>
+
+            <div id="botoes-iniciais" class="space-y-4">
+                <button onclick="mostrarForm('login')" class="w-full binance-bg text-black font-black py-4 rounded uppercase text-xs tracking-widest cursor-pointer">Login</button>
+                <button onclick="mostrarForm('registro')" class="w-full border border-gray-600 text-white font-bold py-4 rounded uppercase text-xs tracking-widest cursor-pointer">Criar Conta</button>
+            </div>
+
+            <div id="form-registro" class="hidden-section mt-6 space-y-4">
+                <input type="text" id="regNome" placeholder="Nome Completo" class="w-full bg-black border border-gray-800 p-3 rounded text-sm text-white outline-none">
+                <input type="tel" placeholder="Telefone" class="w-full bg-black border border-gray-800 p-3 rounded text-sm text-white outline-none">
+                <input type="password" placeholder="Palavra-passe" class="w-full bg-black border border-gray-800 p-3 rounded text-sm text-white outline-none">
+                <button onclick="finalizarAcesso(document.getElementById('regNome').value)" class="w-full binance-bg text-black font-bold py-3 rounded text-xs uppercase">Entrar na Plataforma</button>
+                <button onclick="voltar()" class="block w-full text-[10px] text-gray-500 mt-2 underline">VOLTAR</button>
+            </div>
+
+            <div id="form-login" class="hidden-section mt-6 space-y-4">
+                <input type="tel" placeholder="Número de Telefone" class="w-full bg-black border border-gray-800 p-3 rounded text-sm text-white outline-none">
+                <input type="password" placeholder="Palavra-passe" class="w-full bg-black border border-gray-800 p-3 rounded text-sm text-white outline-none">
+                <button onclick="finalizarAcesso('Investidor')" class="w-full binance-bg text-black font-bold py-3 rounded text-xs uppercase">Entrar</button>
+                <button onclick="voltar()" class="block w-full text-[10px] text-gray-500 mt-2 underline">VOLTAR</button>
+            </div>
+        </div>
+    </section>
+
+    <main id="tela-dashboard" class="hidden-section pb-20">
+        <nav class="p-4 border-b border-gray-800 bg-black flex justify-between items-center sticky top-0 z-50">
+            <span class="font-bold binance-yellow italic text-sm">COUNTER MONEY</span>
+            <span id="nome-user" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest"></span>
+        </nav>
+
+        <section class="py-12 px-5 text-center max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-10 uppercase leading-tight">Multiplique seu Capital<br><span class="binance-yellow">3% a 10% AO DIA</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-16">
+                <div class="card-dark p-6 border-l-4 border-gray-700">
+                    <p class="text-[10px] font-bold text-gray-500 mb-1">10 - 99 USDT</p>
+                    <p class="text-3xl font-black binance-yellow">3% <span class="text-xs text-white">/DIA</span></p>
+                    <button onclick="abrirPagamento()" class="w-full mt-6 py-2 border border-gray-700 rounded text-[10px] font-bold uppercase text-gray-400">Escolher</button>
+                </div>
+                <div class="card-dark p-6 border-l-4 border-yellow-500 bg-yellow-500/5 shadow-xl scale-105">
+                    <p class="text-[10px] font-bold text-gray-400 mb-1">100 - 499 USDT</p>
+                    <p class="text-3xl font-black binance-yellow">5% <span class="text-xs text-white">/DIA</span></p>
+                    <button onclick="abrirPagamento()" class="w-full mt-6 py-2 binance-bg text-black rounded text-[10px] font-bold uppercase">Escolher</button>
+                </div>
+                <div class="card-dark p-6 border-l-4 border-gray-700">
+                    <p class="text-[10px] font-bold text-gray-500 mb-1">500 - 999 USDT</p>
+                    <p class="text-3xl font-black binance-yellow">8% <span class="text-xs text-white">/DIA</span></p>
+                    <button onclick="abrirPagamento()" class="w-full mt-6 py-2 border border-gray-700 rounded text-[10px] font-bold uppercase text-gray-400">Escolher</button>
+                </div>
+                <div class="card-dark p-6 border-l-4 border-gray-700">
+                    <p class="text-[10px] font-bold text-gray-500 mb-1">1000 - 5000 USDT</p>
+                    <p class="text-3xl font-black binance-yellow">10% <span class="text-xs text-white">/DIA</span></p>
+                    <button onclick="abrirPagamento()" class="w-full mt-6 py-2 border border-gray-700 rounded text-[10px] font-bold uppercase text-gray-400">Escolher</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto text-left mb-12">
+                <div class="card-dark p-6">
+                    <h4 class="text-xs font-bold binance-yellow uppercase mb-4">Painel de Levantamento</h4>
+                    <p class="text-2xl font-bold mb-4 text-white">0.00 <span class="text-[10px] text-gray-500">USDT</span></p>
+                    <input type="text" placeholder="Sua Carteira BEP20" class="w-full bg-black border border-gray-800 p-3 rounded text-[10px] text-white outline-none mb-4 focus:border-yellow-500">
+                    <button class="w-full bg-gray-800 text-white py-3 rounded text-[10px] font-bold uppercase opacity-50">Solicitar Saque (Sexta-feira)</button>
+                </div>
+
+                <div class="card-dark p-6 border-dashed border-yellow-500/50">
+                    <h4 class="text-xs font-bold text-white uppercase mb-4 italic">Compartilhar Convite</h4>
+                    <div class="bg-black p-3 rounded border border-gray-800 flex justify-between items-center overflow-hidden">
+                        <code id="campo-link" class="text-[9px] binance-yellow truncate italic">Gerando seu link...</code>
+                        <button onclick="copiarLink()" class="ml-2 text-white hover:text-yellow-500"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <p class="text-[8px] text-gray-500 mt-4 uppercase">* Bônus de 2% sobre depósitos da sua rede direta.</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto card-dark p-8 text-[10px] text-gray-400 space-y-4 uppercase text-left border-l-4 border-yellow-500 leading-relaxed tracking-wider">
+                <h3 class="text-white font-bold mb-2">Termos e Condições de Investimento:</h3>
+                <p>• <span class="text-white font-bold">Retenção de Capital:</span> O capital investido fica retido por um período de <span class="binance-yellow">180 dias</span> (6 meses).</p>
+                <p>• <span class="text-white font-bold">Ciclo de Rendimento:</span> Os rendimentos são creditados diariamente durante <span class="binance-yellow">25 semanas</span>.</p>
+                <p>• <span class="text-white font-bold">Levantamentos:</span> Os saques de lucros podem ser realizados semanalmente, todas as <span class="binance-yellow">Sextas-feiras</span>.</p>
+                <p>• <span class="text-white font-bold">Bônus de Equipe:</span> Bônus extra de 5% para redes com no mínimo 5 membros ativos.</p>
+                <p>• <span class="text-white font-bold">Rede Oficial:</span> Todas as operações devem ser feitas via <span class="binance-yellow">BNB Smart Chain (BEP20)</span>.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('ref')) {
+                document.getElementById('msg-convite').classList.remove('hidden-section');
+                document.getElementById('ref-tag').innerText = params.get('ref');
+            }
+        };
+
+        function mostrarForm(id) {
+            document.getElementById('botoes-iniciais').classList.add('hidden-section');
+            document.getElementById('form-' + id).classList.remove('hidden-section');
+        }
+
+        function voltar() {
+            document.getElementById('form-login').classList.add('hidden-section');
+            document.getElementById('form-registro').classList.add('hidden-section');
+            document.getElementById('botoes-iniciais').classList.remove('hidden-section');
+        }
+
+        function finalizarAcesso(nome) {
+            const user = nome || "Investidor";
+            const id = user.toLowerCase().replace(/\s/g, '') + Math.floor(1000 + Math.random() * 9000);
+            
+            // Link Dinâmico: Mantém a referência ao local onde o arquivo está
+            const linkBase = window.location.href.split('?')[0];
+            document.getElementById('campo-link').innerText = linkBase + "?ref=" + id;
+
+            document.getElementById('tela-acesso').classList.add('hidden-section');
+            document.getElementById('tela-dashboard').classList.remove('hidden-section');
+            document.getElementById('nome-user').innerText = user;
+            window.scrollTo(0,0);
+        }
+
+        function abrirPagamento() {
+            document.getElementById('modal-pagamento').classList.remove('hidden-section');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-pagamento').classList.add('hidden-section');
+        }
+
+        function copiarWallet() {
+            navigator.clipboard.writeText("0xca70ef9db0233fef4449d9517c20f7bd21871b6f");
+            alert("Carteira BEP20 Copiada!");
+        }
+
+        function copiarLink() {
+            navigator.clipboard.writeText(document.getElementById('campo-link').innerText);
+            alert("Link de Convite Copiado!");
+        }
+    </script>
+</body>
+</html>
