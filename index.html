@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Counter Money American | Gestão Única</title>
+    <title>Counter Money American | Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,230 +12,365 @@
         .binance-bg { background-color: #f3ba2f; }
         .card-dark { background-color: #1e2329; border: 1px solid #30363d; border-radius: 12px; }
         .hidden-section { display: none !important; }
-        .input-style { background-color: #0b0e11; border: 1px solid #30363d; padding: 12px; border-radius: 8px; width: 100%; color: white; outline: none; }
-        .chat-scroll { height: 150px; overflow-y: auto; background: #000; padding: 10px; border-radius: 8px; font-size: 11px; }
+        .input-style { background-color: #0b0e11; border: 1px solid #30363d; padding: 14px; border-radius: 8px; width: 100%; color: white; outline: none; }
+        .chat-container { height: 200px; overflow-y: auto; background: #000; padding: 10px; border-radius: 8px; font-size: 11px; border: 1px solid #30363d; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
     <section id="tela-entrada" class="flex-grow flex items-center justify-center p-6">
-        <div class="card-dark p-8 w-full max-w-md border-t-4 border-yellow-500">
-            <h1 class="text-2xl font-black binance-yellow italic text-center uppercase mb-8">COUNTER MONEY</h1>
-            <div id="form-login" class="space-y-4">
-                <input type="tel" id="lTel" placeholder="Telemóvel" class="input-style">
-                <input type="password" id="lPass" placeholder="Palavra-passe" class="input-style">
-                <button onclick="logar()" class="w-full binance-bg text-black font-black py-3 rounded-lg uppercase text-xs">Entrar</button>
-                <p class="text-[10px] text-center text-gray-500">Não tem conta? <span onclick="document.getElementById('form-login').classList.add('hidden-section'); document.getElementById('form-cad').classList.remove('hidden-section')" class="binance-yellow cursor-pointer">Cadastre-se</span></p>
+        <div class="card-dark p-8 w-full max-w-md shadow-2xl border-t-4 border-yellow-500">
+            <h1 class="text-3xl font-black binance-yellow italic text-center uppercase">COUNTER MONEY</h1>
+            <p class="text-gray-500 text-[9px] tracking-[0.4em] mb-8 text-center uppercase font-bold">American Investment Group</p>
+            
+            <div class="flex mb-8 bg-black p-1 rounded-lg font-bold text-xs">
+                <button id="btn-tab-login" class="flex-1 py-3 rounded-md binance-bg text-black">LOGIN</button>
+                <button id="btn-tab-cad" class="flex-1 py-3 rounded-md text-gray-500">CADASTRAR</button>
             </div>
-            <div id="form-cad" class="hidden-section space-y-4">
+
+            <div id="form-login" class="space-y-4">
+                <input type="tel" id="lTel" placeholder="Número de Telefone" class="input-style">
+                <input type="password" id="lPass" placeholder="Palavra-passe" class="input-style">
+                <button id="btn-login" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Aceder</button>
+            </div>
+
+            <div id="form-cad" class="hidden-section space-y-3">
                 <input type="text" id="cNome" placeholder="Nome Completo" class="input-style">
-                <input type="tel" id="cTel" placeholder="Telemóvel" class="input-style">
-                <input type="password" id="cPass" placeholder="Palavra-passe" class="input-style">
-                <button onclick="cadastrar()" class="w-full binance-bg text-black font-black py-3 rounded-lg uppercase text-xs">Criar Conta</button>
+                <input type="tel" id="cTel" placeholder="Número de Telefone" class="input-style">
+                <input type="password" id="cPass" placeholder="Criar Palavra-passe" class="input-style">
+                <input type="password" id="cPassConf" placeholder="Confirmar Palavra-passe" class="input-style">
+                <button id="btn-cadastrar" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Criar Minha Conta</button>
             </div>
         </div>
     </section>
 
-    <main id="dash-user" class="hidden-section p-4 max-w-4xl mx-auto w-full pb-20">
+    <main id="dash-user" class="hidden-section p-4 max-w-4xl mx-auto w-full pb-24">
         <header class="flex justify-between items-center mb-6">
-            <h2 id="uNome" class="text-sm font-bold italic uppercase"></h2>
+            <h2 id="uNomeDisplay" class="text-lg font-bold text-white italic uppercase"></h2>
             <div class="flex gap-4">
-                <button onclick="abrirSuporte()" class="binance-yellow"><i class="fas fa-headset text-xl"></i></button>
-                <button onclick="location.reload()" class="text-gray-400"><i class="fas fa-sign-out-alt"></i></button>
+                <button id="btn-abrir-suporte" class="binance-yellow text-xl"><i class="fas fa-headset"></i></button>
+                <button onclick="location.reload()" class="text-gray-500"><i class="fas fa-sign-out-alt"></i></button>
             </div>
         </header>
 
-        <div class="card-dark p-6 mb-4">
-            <p class="text-[10px] text-gray-500 uppercase">Saldo Disponível</p>
-            <p class="text-3xl font-black text-white"><span id="uSaldo">0.00</span> <span class="text-xs">USDT</span></p>
-            <div class="mt-4 space-y-2">
-                <input type="text" id="uWallet" placeholder="Endereço BEP20 para receber" class="input-style text-xs">
-                <button onclick="solicitarSaque()" class="w-full border border-yellow-500 text-yellow-500 py-2 rounded text-[10px] font-bold">SOLICITAR LEVANTAMENTO</button>
+        <div class="card-dark p-6 mb-6 border-l-4 border-yellow-500">
+            <p class="text-[10px] text-gray-500 uppercase font-bold">Saldo para levantamento</p>
+            <p class="text-4xl font-black text-white mb-4"><span id="uSaldo">0.00</span> <span class="text-sm">USDT</span></p>
+            <input type="text" id="uWallet" placeholder="Endereço de levantamento BEP20" class="input-style mb-2 text-xs">
+            <button id="btn-solicitar-saque" class="w-full bg-yellow-500/10 border border-yellow-500 text-yellow-500 py-3 rounded-lg text-[10px] font-black uppercase">Solicitar Levantamento</button>
+        </div>
+
+        <div class="mb-6 text-center">
+            <h3 class="text-xs font-bold uppercase text-white italic">Multiplique o seu investimento com a Counter Money</h3>
+            <p class="text-yellow-500 text-[10px] font-black">Receba de 3% a 10% diários</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div onclick="prepararInvest(10, 99, 'BÁSICO', '3%')" class="card-dark p-4 border-b border-gray-700 hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-xs mb-2"><span>BÁSICO</span> <span class="binance-yellow">3% DIA</span></div>
+                <p class="text-2xl font-black">10 - 99 <span class="text-xs">USDT</span></p>
+            </div>
+            <div onclick="prepararInvest(100, 999, 'PRÉMIO', '5%')" class="card-dark p-4 border-b border-gray-700 hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-xs mb-2"><span>PRÉMIO</span> <span class="binance-yellow">5% DIA</span></div>
+                <p class="text-2xl font-black">100 - 999 <span class="text-xs">USDT</span></p>
+            </div>
+            <div onclick="prepararInvest(1000, 4999, 'BRONZE', '8%')" class="card-dark p-4 border-b border-gray-700 hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-xs mb-2"><span>BRONZE</span> <span class="binance-yellow">8% DIA</span></div>
+                <p class="text-2xl font-black">1000 - 4999 <span class="text-xs">USDT</span></p>
+            </div>
+            <div onclick="prepararInvest(5000, 100000, 'ELITE', '10%')" class="card-dark p-4 border-b border-gray-700 hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-xs mb-2"><span>ELITE</span> <span class="binance-yellow">10% DIA</span></div>
+                <p class="text-2xl font-black">5000+ <span class="text-xs">USDT</span></p>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2 mb-4 text-center">
-            <div onclick="abrirPg('BÁSICO', 10)" class="card-dark p-3 border-b-2 border-yellow-500">
-                <p class="text-[9px]">10-99 USDT</p>
-                <p class="font-bold binance-yellow">3% DIA</p>
-            </div>
-            <div onclick="abrirPg('PRÉMIO', 100)" class="card-dark p-3 border-b-2 border-yellow-500">
-                <p class="text-[9px]">100-999 USDT</p>
-                <p class="font-bold binance-yellow">5% DIA</p>
-            </div>
+        <div class="card-dark p-6 text-[10px] text-gray-400 space-y-2 uppercase italic leading-relaxed">
+            <p>• Valor retribuído após 180 dias (25 semanas)</p>
+            <p>• Saques apenas nas sextas-feiras</p>
+            <p>• Bônus de convite de 2% individual</p>
+            <p>• Bônus de 5% para equipe com 5 membros</p>
         </div>
-        <p class="text-[9px] text-gray-500 italic text-center uppercase mb-6">Pagamentos às Sextas | Retenção 180 dias</p>
     </main>
 
-    <div id="modal-pg" class="hidden-section fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6 text-center">
-        <div class="card-dark p-6 w-full max-w-sm">
-            <h3 class="binance-yellow font-black mb-2 uppercase" id="pgPlano"></h3>
-            <input type="number" id="pgValor" placeholder="Valor a investir" class="input-style mb-4 text-center">
-            <p class="text-[9px] text-gray-500 mb-2 uppercase">Envie para (BEP20):</p>
-            <code class="text-yellow-500 text-[10px] block mb-6 bg-black p-2">0xca70ef9db0233fef4449d9517c20f7bd21871b6f</code>
-            <button onclick="confirmarInvest()" class="w-full binance-bg text-black font-bold py-3 rounded uppercase text-xs">Já paguei</button>
-            <button onclick="fecharModais()" class="mt-2 text-gray-600 text-[10px]">CANCELAR</button>
+    <main id="dash-admin" class="hidden-section p-6 w-full max-w-6xl mx-auto">
+        <h2 class="text-2xl font-black binance-yellow mb-8 border-b border-yellow-500 pb-2">ADMIN MASTER</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="card-dark p-4">
+                <h3 class="text-xs font-bold text-blue-400 mb-4 uppercase">Novos Depósitos</h3>
+                <div id="adm-lista-depositos" class="space-y-3"></div>
+            </div>
+            <div class="card-dark p-4">
+                <h3 class="text-xs font-bold text-green-400 mb-4 uppercase">Pedidos de Saque</h3>
+                <div id="adm-lista-saques" class="space-y-3"></div>
+            </div>
+            <div class="card-dark p-4">
+                <h3 class="text-xs font-bold text-yellow-500 mb-4 uppercase">Gestão de Membros e Chat</h3>
+                <div id="adm-lista-membros" class="space-y-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-investir" class="hidden-section fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-6 text-center">
+        <div class="card-dark p-8 w-full max-w-sm">
+            <h3 id="modalPlanoNome" class="binance-yellow font-black mb-4 uppercase"></h3>
+            <input type="number" id="investValor" placeholder="Valor a investir" class="input-style mb-4 text-center">
+            <p class="text-[10px] text-gray-500 mb-2 uppercase italic">Envie para o endereço Bep20 abaixo:</p>
+            <code class="text-yellow-500 text-[10px] block mb-6 bg-black p-3 break-all">0xca70ef9db0233fef4449d9517c20f7bd21871b6f</code>
+            <button id="btn-confirmar-pg" class="w-full binance-bg text-black font-bold py-4 rounded-lg uppercase text-xs">Confirmar Pagamento</button>
+            <button onclick="fecharModais()" class="mt-4 text-gray-600 text-[10px] uppercase">Cancelar</button>
         </div>
     </div>
 
     <div id="modal-suporte" class="hidden-section fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6">
         <div class="card-dark p-6 w-full max-w-sm">
-            <p class="text-[10px] font-bold binance-yellow mb-4 italic uppercase">Suporte Individual</p>
-            <div id="chat-user-box" class="chat-scroll mb-4"></div>
+            <h3 class="binance-yellow font-black text-xs uppercase mb-4 text-center italic">Suporte Counter Money</h3>
+            <div id="chat-box" class="chat-container mb-4"></div>
             <div class="flex gap-2">
-                <input type="text" id="msg-user" placeholder="Sua dúvida..." class="input-style py-2 text-xs">
-                <button onclick="enviarMsgUser()" class="binance-bg text-black px-4 rounded"><i class="fas fa-paper-plane"></i></button>
+                <input type="text" id="chat-input" placeholder="Sua dúvida..." class="input-style py-2 text-xs">
+                <button id="btn-enviar-msg" class="binance-bg text-black px-4 rounded-lg"><i class="fas fa-paper-plane"></i></button>
             </div>
-            <button onclick="fecharModais()" class="w-full mt-4 text-gray-600 text-[10px]">FECHAR</button>
+            <button onclick="fecharModais()" class="w-full mt-4 text-gray-600 text-[9px] uppercase font-bold text-center">Fechar Janela</button>
         </div>
     </div>
 
-    <main id="dash-admin" class="hidden-section p-4 max-w-6xl mx-auto w-full">
-        <div class="flex justify-between items-center mb-6 border-b border-yellow-500 pb-2">
-            <h1 class="text-lg font-black binance-yellow italic">ADMINISTRADOR MASTER</h1>
-            <button onclick="location.reload()" class="text-xs bg-red-600 px-2 py-1 rounded">SAIR</button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="card-dark p-4">
-                <h2 class="text-[10px] font-black text-blue-400 mb-4 uppercase">Investimentos Pendentes</h2>
-                <div id="adm-depositos" class="space-y-3"></div>
-            </div>
-            <div class="card-dark p-4">
-                <h2 class="text-[10px] font-black text-green-400 mb-4 uppercase">Pedidos de Saque</h2>
-                <div id="adm-saques" class="space-y-3"></div>
-            </div>
-            <div class="card-dark p-4">
-                <h2 class="text-[10px] font-black text-yellow-500 mb-4 uppercase">Mensagens Individualizadas</h2>
-                <div id="adm-chats" class="space-y-4"></div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="mt-auto p-4 text-center">
-        <span onclick="abrirAdmin()" class="text-gray-900 text-[10px] cursor-pointer">2020</span>
+    <footer class="p-8 text-center mt-auto">
+        <span onclick="checkAdmin()" class="text-gray-900 text-[11px] cursor-pointer">2020</span>
     </footer>
 
-    <script>
-        let db = JSON.parse(localStorage.getItem('cm_core_v5') || '{"users":[]}');
-        let currentU = null;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get, update, onValue, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        function salvar() { localStorage.setItem('cm_core_v5', JSON.stringify(db)); }
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjPC6owE_uk3EixNUyqNCCHfrCklOIO7U",
+            authDomain: "countermoneyamerican.firebaseapp.com",
+            databaseURL: "https://countermoneyamerican-default-rtdb.firebaseio.com",
+            projectId: "countermoneyamerican",
+            storageBucket: "countermoneyamerican.firebasestorage.app",
+            messagingSenderId: "779330695552",
+            appId: "1:779330695552:web:0791551d89567d189e9165"
+        };
 
-        function cadastrar() {
-            const n = document.getElementById('cNome').value, t = document.getElementById('cTel').value, p = document.getElementById('cPass').value;
-            if(!n || !t || !p) return alert("Preencha tudo!");
-            if(db.users.find(x => x.tel === t)) return alert("Telemóvel já existe!");
-            db.users.push({ nome: n, tel: t, pass: p, saldo: 0, msgs: [], invest: [], saque: null });
-            salvar(); alert("Sucesso!"); location.reload();
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let userLogado = null;
 
-        function logar() {
-            const t = document.getElementById('lTel').value, p = document.getElementById('lPass').value;
-            const u = db.users.find(x => x.tel === t && x.pass === p);
-            if(u) {
-                currentU = u;
-                document.getElementById('tela-entrada').classList.add('hidden-section');
-                document.getElementById('dash-user').classList.remove('hidden-section');
-                document.getElementById('uNome').innerText = u.nome;
-                document.getElementById('uSaldo').innerText = u.saldo;
-                renderChatUser();
-            } else { alert("Falha no login!"); }
-        }
+        // --- NAVEGAÇÃO ---
+        window.aba = (t) => {
+            document.getElementById('form-login').classList.toggle('hidden-section', t !== 'login');
+            document.getElementById('form-cad').classList.toggle('hidden-section', t !== 'cadastro');
+            document.getElementById('btn-tab-login').className = t === 'login' ? 'flex-1 py-3 rounded-md binance-bg text-black' : 'flex-1 py-3 rounded-md text-gray-500';
+            document.getElementById('btn-tab-cad').className = t === 'cadastro' ? 'flex-1 py-3 rounded-md binance-bg text-black' : 'flex-1 py-3 rounded-md text-gray-500';
+        };
+        document.getElementById('btn-tab-login').onclick = () => aba('login');
+        document.getElementById('btn-tab-cad').onclick = () => aba('cadastro');
 
-        function abrirPg(p, m) { window.pNome = p; window.pMin = m; document.getElementById('pgPlano').innerText = p; document.getElementById('modal-pg').classList.remove('hidden-section'); }
+        // --- CADASTRO ---
+        document.getElementById('btn-cadastrar').onclick = async () => {
+            const nome = document.getElementById('cNome').value;
+            const tel = document.getElementById('cTel').value;
+            const pass = document.getElementById('cPass').value;
+            const passC = document.getElementById('cPassConf').value;
 
-        function confirmarInvest() {
-            const val = document.getElementById('pgValor').value;
-            if(val < window.pMin) return alert("Mínimo " + window.pMin);
-            currentU.invest.push({ valor: val, status: 'Pendente' });
-            salvar(); alert("Aguardando confirmação do Admin!"); fecharModais();
-        }
+            if(!nome || !tel || !pass) return alert("Preencha todos os campos!");
+            if(pass !== passC) return alert("As palavras-passe não coincidem!");
 
-        function solicitarSaque() {
-            const w = document.getElementById('uWallet').value;
-            if(!w || currentU.saldo <= 0) return alert("Verifique saldo e carteira!");
-            currentU.saque = { valor: currentU.saldo, carteira: w };
-            salvar(); alert("Pedido enviado!");
-        }
+            const snapshot = await get(ref(db, 'usuarios/' + tel));
+            if(snapshot.exists()) return alert("Este número já está registado!");
 
-        function enviarMsgUser() {
-            const t = document.getElementById('msg-user').value;
-            if(!t) return;
-            currentU.msgs.push({ de: 'u', txt: t });
-            document.getElementById('msg-user').value = ""; salvar(); renderChatUser();
-        }
+            await set(ref(db, 'usuarios/' + tel), {
+                nome, tel, pass, saldo: 0, status: 'Ativo'
+            });
+            alert("Conta criada com sucesso!");
+            location.reload();
+        };
 
-        function renderChatUser() {
-            const b = document.getElementById('chat-user-box');
-            b.innerHTML = currentU.msgs.map(m => `<div class="mb-2 ${m.de==='u'?'text-yellow-500':'text-green-500'}"><b>${m.de==='u'?'Eu':'Admin'}:</b> ${m.txt}</div>`).join('');
-            b.scrollTop = b.scrollHeight;
-        }
-
-        // --- ADMIN ---
-        function abrirAdmin() {
-            if(prompt("Senha Master:") === "admin123") {
-                document.getElementById('tela-entrada').classList.add('hidden-section');
-                document.getElementById('dash-admin').classList.remove('hidden-section');
-                renderAdmin();
+        // --- LOGIN ---
+        document.getElementById('btn-login').onclick = async () => {
+            const tel = document.getElementById('lTel').value;
+            const pass = document.getElementById('lPass').value;
+            const snapshot = await get(ref(db, 'usuarios/' + tel));
+            
+            if(snapshot.exists() && snapshot.val().pass === pass) {
+                userLogado = snapshot.val();
+                carregarDashboard();
+            } else {
+                alert("Telemóvel ou Palavra-passe incorretos!");
             }
+        };
+
+        function carregarDashboard() {
+            document.getElementById('tela-entrada').classList.add('hidden-section');
+            document.getElementById('dash-user').classList.remove('hidden-section');
+            document.getElementById('uNomeDisplay').innerText = userLogado.nome;
+            
+            onValue(ref(db, 'usuarios/' + userLogado.tel), (snap) => {
+                const d = snap.val();
+                document.getElementById('uSaldo').innerText = parseFloat(d.saldo).toFixed(2);
+            });
+            escutarMensagens();
         }
 
-        function renderAdmin() {
-            const dArea = document.getElementById('adm-depositos'), sArea = document.getElementById('adm-saques'), cArea = document.getElementById('adm-chats');
-            dArea.innerHTML = ""; sArea.innerHTML = ""; cArea.innerHTML = "";
+        // --- INVESTIMENTOS ---
+        window.prepararInvest = (min, max, plano) => {
+            window.tempMin = min;
+            window.tempPlano = plano;
+            document.getElementById('modalPlanoNome').innerText = "PLANO " + plano;
+            document.getElementById('modal-investir').classList.remove('hidden-section');
+        };
 
-            db.users.forEach((u, i) => {
-                // Depósitos Pendentes
-                u.invest.forEach((inv, invI) => {
-                    if(inv.status === 'Pendente') dArea.innerHTML += `<div class="bg-black p-2 border border-gray-800 text-[10px]">
-                        ${u.nome} - <b>${inv.valor} USDT</b>
-                        <button onclick="ativarInvest(${i}, ${invI})" class="block w-full bg-blue-600 mt-2 py-1 rounded">ATIVAR E DAR LUCRO</button>
-                    </div>`;
-                });
+        document.getElementById('btn-confirmar-pg').onclick = async () => {
+            const valor = document.getElementById('investValor').value;
+            if(valor < window.tempMin) return alert("Mínimo para este plano é " + window.tempMin + " USDT");
+            
+            await push(ref(db, 'depositos_pendentes'), {
+                usuario: userLogado.nome,
+                tel: userLogado.tel,
+                valor: valor,
+                plano: window.tempPlano,
+                data: new Date().toLocaleString()
+            });
+            alert("Pedido enviado! Aguarde a aprovação do administrador.");
+            fecharModais();
+        };
 
-                // Saques
-                if(u.saque) sArea.innerHTML += `<div class="bg-black p-2 border border-green-900 text-[10px]">
-                    ${u.nome} - <b>${u.saque.valor} USDT</b><br>
-                    TEL: ${u.tel}<br>WALLET: <span class="text-yellow-500">${u.saque.carteira}</span>
-                    <button onclick="pagarSaque(${i})" class="block w-full bg-green-600 mt-2 py-1 rounded">MARCAR COMO PAGO</button>
-                </div>`;
+        // --- SAQUES ---
+        document.getElementById('btn-solicitar-saque').onclick = async () => {
+            const wallet = document.getElementById('uWallet').value;
+            const saldoAtual = parseFloat(document.getElementById('uSaldo').innerText);
 
-                // Chats Individuais
-                if(u.msgs.length > 0) cArea.innerHTML += `<div class="bg-black p-2 border border-yellow-900">
-                    <p class="text-[10px] font-bold binance-yellow">${u.nome} (${u.tel})</p>
-                    <div class="chat-scroll h-24 my-2">
-                        ${u.msgs.map(m => `<div class="text-[9px]"><b>${m.de}:</b> ${m.txt}</div>`).join('')}
-                    </div>
-                    <div class="flex gap-1">
-                        <input id="ans-${i}" type="text" placeholder="Responder..." class="input-style py-1 text-[9px]">
-                        <button onclick="responderAdmin(${i})" class="bg-yellow-600 px-3 rounded text-[9px]">OK</button>
-                    </div>
-                </div>`;
+            if(!wallet) return alert("Insira o seu endereço BEP20!");
+            if(saldoAtual <= 0) return alert("Saldo insuficiente!");
+
+            await push(ref(db, 'saques_pendentes'), {
+                usuario: userLogado.nome,
+                tel: userLogado.tel,
+                valor: saldoAtual,
+                wallet: wallet,
+                data: new Date().toLocaleString()
+            });
+            
+            await update(ref(db, 'usuarios/' + userLogado.tel), { saldo: 0 });
+            alert("Pedido de levantamento enviado para processamento!");
+        };
+
+        // --- CHAT ---
+        document.getElementById('btn-abrir-suporte').onclick = () => document.getElementById('modal-suporte').classList.remove('hidden-section');
+        document.getElementById('btn-enviar-msg').onclick = async () => {
+            const msg = document.getElementById('chat-input').value;
+            if(!msg) return;
+            await push(ref(db, 'chats/' + userLogado.tel), { de: 'u', txt: msg, data: Date.now() });
+            document.getElementById('chat-input').value = "";
+        };
+
+        function escutarMensagens() {
+            onValue(ref(db, 'chats/' + userLogado.tel), (snap) => {
+                const data = snap.val();
+                const box = document.getElementById('chat-box');
+                box.innerHTML = "";
+                if(data) {
+                    Object.values(data).forEach(m => {
+                        box.innerHTML += `<div class="mb-2 ${m.de === 'u' ? 'text-yellow-500' : 'text-green-400'}">
+                            <b>${m.de === 'u' ? 'Eu' : 'Admin'}:</b> ${m.txt}
+                        </div>`;
+                    });
+                    box.scrollTop = box.scrollHeight;
+                }
             });
         }
 
-        function ativarInvest(ui, ii) {
-            const lucro = prompt("Quanto de lucro creditar agora?");
-            db.users[ui].saldo = (parseFloat(db.users[ui].saldo) + parseFloat(lucro || 0)).toFixed(2);
-            db.users[ui].invest[ii].status = "Ativo";
-            salvar(); renderAdmin();
+        // --- ADMIN (OCULTO) ---
+        window.checkAdmin = () => {
+            if(prompt("Acesso Restrito - Senha:") === "admin123") {
+                document.getElementById('tela-entrada').classList.add('hidden-section');
+                document.getElementById('dash-user').classList.add('hidden-section');
+                document.getElementById('dash-admin').classList.remove('hidden-section');
+                carregarAdmin();
+            }
+        };
+
+        function carregarAdmin() {
+            // Depósitos
+            onValue(ref(db, 'depositos_pendentes'), (snap) => {
+                const list = document.getElementById('adm-lista-depositos');
+                list.innerHTML = "";
+                if(snap.val()) Object.entries(snap.val()).forEach(([key, d]) => {
+                    list.innerHTML += `<div class="bg-black p-3 border border-gray-800 text-[10px]">
+                        ${d.usuario} (${d.tel})<br>VALOR: <b>${d.valor} USDT</b> [${d.plano}]
+                        <button onclick="aprovarDeposito('${key}', '${d.tel}', ${d.valor})" class="block w-full bg-blue-600 mt-2 py-1 rounded">APROVAR E ATIVAR</button>
+                    </div>`;
+                });
+            });
+
+            // Saques
+            onValue(ref(db, 'saques_pendentes'), (snap) => {
+                const list = document.getElementById('adm-lista-saques');
+                list.innerHTML = "";
+                if(snap.val()) Object.entries(snap.val()).forEach(([key, s]) => {
+                    list.innerHTML += `<div class="bg-black p-3 border border-green-900 text-[10px]">
+                        ${s.usuario}<br>TEL: ${s.tel}<br>VALOR: <b>${s.valor} USDT</b><br>
+                        CARTEIRA: <span class="text-yellow-500">${s.wallet}</span>
+                        <button onclick="processarSaque('${key}')" class="block w-full bg-green-600 mt-2 py-1 rounded uppercase">Marcar como Pago</button>
+                    </div>`;
+                });
+            });
+
+            // Membros e Chat
+            onValue(ref(db, 'usuarios'), (snap) => {
+                const list = document.getElementById('adm-lista-membros');
+                list.innerHTML = "";
+                if(snap.val()) Object.entries(snap.val()).forEach(([tel, u]) => {
+                    list.innerHTML += `<div class="bg-black p-3 border border-yellow-900">
+                        <p class="text-[10px] font-bold binance-yellow uppercase">${u.nome} (${tel})</p>
+                        <p class="text-[9px]">Saldo: ${u.saldo} USDT</p>
+                        <div class="flex gap-1 mt-2">
+                            <input id="lucro-${tel}" type="number" placeholder="+ Lucro" class="input-style py-1 text-[9px] w-1/2">
+                            <button onclick="adicionarLucro('${tel}')" class="bg-yellow-600 px-2 rounded text-[9px]">ADD</button>
+                        </div>
+                        <div class="mt-3">
+                            <input id="resp-${tel}" type="text" placeholder="Responder chat..." class="input-style py-1 text-[9px]">
+                            <button onclick="responderChat('${tel}')" class="w-full bg-gray-700 mt-1 py-1 rounded text-[9px]">ENVIAR MSG</button>
+                        </div>
+                    </div>`;
+                });
+            });
         }
 
-        function pagarSaque(ui) {
-            db.users[ui].saldo = 0; db.users[ui].saque = null;
-            salvar(); renderAdmin(); alert("Pago!");
-        }
+        // Funções de Ação do Admin
+        window.aprovarDeposito = async (key, tel, valor) => {
+            const snap = await get(ref(db, 'usuarios/' + tel));
+            const saldoAtual = parseFloat(snap.val().saldo || 0);
+            await update(ref(db, 'usuarios/' + tel), { saldo: saldoAtual + valor });
+            await set(ref(db, 'depositos_pendentes/' + key), null);
+            alert("Depósito aprovado!");
+        };
 
-        function responderAdmin(ui) {
-            const txt = document.getElementById('ans-'+ui).value;
+        window.processarSaque = async (key) => {
+            await set(ref(db, 'saques_pendentes/' + key), null);
+            alert("Saque marcado como processado!");
+        };
+
+        window.adicionarLucro = async (tel) => {
+            const val = document.getElementById('lucro-' + tel).value;
+            if(!val) return;
+            const snap = await get(ref(db, 'usuarios/' + tel));
+            const novoSaldo = (parseFloat(snap.val().saldo) + parseFloat(val)).toFixed(2);
+            await update(ref(db, 'usuarios/' + tel), { saldo: novoSaldo });
+            alert("Lucro adicionado!");
+        };
+
+        window.responderChat = async (tel) => {
+            const txt = document.getElementById('resp-' + tel).value;
             if(!txt) return;
-            db.users[ui].msgs.push({ de: 'a', txt: txt });
-            salvar(); renderAdmin();
-        }
+            await push(ref(db, 'chats/' + tel), { de: 'a', txt: txt, data: Date.now() });
+            document.getElementById('resp-' + tel).value = "";
+        };
 
-        function abrirSuporte() { document.getElementById('modal-suporte').classList.remove('hidden-section'); }
-        function fecharModais() { document.getElementById('modal-pg').classList.add('hidden-section'); document.getElementById('modal-suporte').classList.add('hidden-section'); }
+        window.fecharModais = () => {
+            document.getElementById('modal-investir').classList.add('hidden-section');
+            document.getElementById('modal-suporte').classList.add('hidden-section');
+        };
+
     </script>
 </body>
 </html>
