@@ -6,8 +6,8 @@
     <title>Counter Money American | Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
         body { background-color: #0b0e11; color: #eaecef; font-family: 'Inter', sans-serif; margin: 0; }
         .binance-yellow { color: #f3ba2f; }
@@ -16,33 +16,33 @@
         .hidden-section { display: none !important; }
         .input-style { background-color: #0b0e11; border: 1px solid #30363d; padding: 14px; border-radius: 8px; width: 100%; color: white; outline: none; transition: 0.3s; }
         .input-style:focus { border-color: #f3ba2f; }
-        .chat-box { height: 200px; overflow-y: auto; background: #000; padding: 10px; border-radius: 8px; font-size: 12px; border: 1px solid #30363d; }
+        .chat-container { height: 200px; overflow-y: auto; background: #000; padding: 10px; border-radius: 8px; font-size: 11px; border: 1px solid #30363d; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
     <section id="tela-entrada" class="flex-grow flex items-center justify-center p-6">
-        <div class="card-dark p-8 w-full max-w-md shadow-2xl border-t-4 border-yellow-500">
-            <h1 class="text-3xl font-black binance-yellow italic text-center uppercase">COUNTER MONEY</h1>
-            <p class="text-gray-500 text-[9px] tracking-[0.4em] mb-8 text-center uppercase font-bold">American Investment Group</p>
+        <div class="card-dark p-8 w-full max-w-md shadow-2xl border-t-4 border-yellow-500 text-center">
+            <h1 class="text-3xl font-black binance-yellow italic uppercase">COUNTER MONEY</h1>
+            <p class="text-gray-500 text-[9px] tracking-[0.4em] mb-8 uppercase font-bold text-center">American Investment Group</p>
             
             <div class="flex mb-8 bg-black p-1 rounded-lg font-bold text-xs">
-                <button onclick="aba('login')" id="btn-aba-login" class="flex-1 py-3 rounded-md binance-bg text-black">LOGIN</button>
-                <button onclick="aba('cadastro')" id="btn-aba-cad" class="flex-1 py-3 rounded-md text-gray-500">CRIAR CONTA</button>
+                <button onclick="mudarAba('login')" id="btn-aba-login" class="flex-1 py-3 rounded-md binance-bg text-black">LOGIN</button>
+                <button onclick="mudarAba('cadastro')" id="btn-aba-cad" class="flex-1 py-3 rounded-md text-gray-500">CADASTRAR</button>
             </div>
 
             <div id="form-login" class="space-y-4">
                 <input type="tel" id="lTel" placeholder="Número de Telefone" class="input-style">
                 <input type="password" id="lPass" placeholder="Palavra-passe" class="input-style">
-                <button onclick="logar()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Entrar na Conta</button>
+                <button onclick="login()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Aceder à conta</button>
             </div>
 
             <div id="form-cad" class="hidden-section space-y-3">
                 <input type="text" id="cNome" placeholder="Nome Completo" class="input-style">
-                <input type="tel" id="cTel" placeholder="Número" class="input-style">
-                <input type="password" id="cPass" placeholder="Palavra-passe" class="input-style">
+                <input type="tel" id="cTel" placeholder="Número de Telefone" class="input-style">
+                <input type="password" id="cPass" placeholder="Criar Palavra-passe" class="input-style">
                 <input type="password" id="cPassConf" placeholder="Confirmar Palavra-passe" class="input-style">
-                <button onclick="cadastrar()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Criar Minha Conta</button>
+                <button onclick="registrar()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Criar Minha Conta</button>
             </div>
         </div>
     </section>
@@ -51,7 +51,7 @@
         <header class="flex justify-between items-center mb-6">
             <div>
                 <p class="text-[10px] text-gray-500 uppercase font-bold">Bem-vindo,</p>
-                <h2 id="uNome" class="text-lg font-bold text-white italic uppercase"></h2>
+                <h2 id="uNome" class="text-lg font-bold text-white italic uppercase">---</h2>
             </div>
             <div class="flex gap-4">
                 <button onclick="abrirSuporte()" class="binance-yellow text-xl"><i class="fas fa-headset"></i></button>
@@ -59,92 +59,110 @@
             </div>
         </header>
 
-        <div class="card-dark p-6 mb-6 border-l-4 border-yellow-500 shadow-lg">
-            <p class="text-[10px] text-gray-500 uppercase font-bold">Saldo de Lucros (Disponível Sexta)</p>
-            <p class="text-4xl font-black text-white mb-6"><span id="uSaldo">0.00</span> <span class="text-sm">USDT</span></p>
-            <input type="text" id="uWallet" placeholder="Endereço de Levantamento BEP20" class="input-style mb-3 text-xs">
-            <button onclick="solicitarSaque()" class="w-full bg-yellow-500/10 border border-yellow-500 text-yellow-500 py-3 rounded-lg text-[10px] font-black uppercase hover:bg-yellow-500 hover:text-black transition">Solicitar Levantamento</button>
+        <div class="card-dark p-6 mb-6 border-l-4 border-yellow-500 shadow-xl">
+            <p class="text-[10px] text-gray-500 uppercase font-bold">Saldo para levantamento</p>
+            <p class="text-4xl font-black text-white mb-4"><span id="uSaldo">0.00</span> <span class="text-sm">USDT</span></p>
+            <input type="text" id="uWallet" placeholder="Endereço de levantamento BEP20" class="input-style mb-3 text-xs">
+            <button onclick="pedirSaque()" class="w-full bg-yellow-500/10 border border-yellow-500 text-yellow-500 py-3 rounded-lg text-[10px] font-black uppercase tracking-wider">Solicitar Levantamento</button>
         </div>
 
-        <div class="card-dark p-4 mb-8 bg-black/40">
-            <p class="text-[9px] text-gray-500 uppercase mb-2 font-bold">Link de Convite (Bónus 2% - 5%)</p>
+        <div class="card-dark p-4 mb-6 bg-black/40 border-dashed border-gray-700">
+            <p class="text-[9px] text-gray-500 uppercase mb-1 font-bold">O Seu Link de Convite</p>
             <div class="flex justify-between items-center gap-2">
-                <code id="uLink" class="text-[10px] binance-yellow truncate bg-black/60 p-2 rounded flex-grow">A carregar link...</code>
-                <button onclick="copiarLink()" class="binance-bg text-black px-4 py-2 rounded text-xs font-bold uppercase">Copiar</button>
+                <code id="uLink" class="text-[10px] binance-yellow truncate font-mono">---</code>
+                <button onclick="copiarLink()" class="binance-yellow p-2"><i class="fas fa-copy"></i></button>
             </div>
         </div>
 
         <div class="mb-6 text-center">
-            <h3 class="text-sm font-bold uppercase text-white italic">Multiplique o seu investimento</h3>
-            <p class="text-yellow-500 text-[10px] font-black uppercase tracking-widest">Ganhe de 3% a 10% diários</p>
+            <h3 class="text-xs font-bold uppercase text-white italic">Multiplique o seu investimento com a Counter Money</h3>
+            <p class="text-yellow-500 text-[10px] font-black uppercase">Receba 3% a 10% diários</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div onclick="abrirPg('BÁSICO (3%)', 10, 99)" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer transition shadow-md">
-                <div class="flex justify-between font-bold text-xs mb-3 text-gray-400"><span>BÁSICO</span> <span class="binance-yellow">3% DIA</span></div>
-                <p class="text-2xl font-black">10 - 99 <span class="text-xs font-normal">USDT</span></p>
+            <div onclick="abrirInvestir(10, 99, 'BÁSICO', '3%')" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-[10px] mb-2"><span>PLANO BÁSICO</span> <span class="binance-yellow text-xs">3% DIA</span></div>
+                <p class="text-2xl font-black text-white">10 - 99 <span class="text-xs text-gray-500">USDT</span></p>
             </div>
-            <div onclick="abrirPg('PRÉMIO (5%)', 100, 999)" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer transition shadow-md">
-                <div class="flex justify-between font-bold text-xs mb-3 text-gray-400"><span>PRÉMIO</span> <span class="binance-yellow">5% DIA</span></div>
-                <p class="text-2xl font-black">100 - 999 <span class="text-xs font-normal">USDT</span></p>
+            <div onclick="abrirInvestir(100, 999, 'PRÉMIO', '5%')" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-[10px] mb-2"><span>PLANO PRÉMIO</span> <span class="binance-yellow text-xs">5% DIA</span></div>
+                <p class="text-2xl font-black text-white">100 - 999 <span class="text-xs text-gray-500">USDT</span></p>
             </div>
-            <div onclick="abrirPg('BRONZE (8%)', 1000, 4999)" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer transition shadow-md">
-                <div class="flex justify-between font-bold text-xs mb-3 text-gray-400"><span>BRONZE</span> <span class="binance-yellow">8% DIA</span></div>
-                <p class="text-2xl font-black">1000 - 4999 <span class="text-xs font-normal">USDT</span></p>
+            <div onclick="abrirInvestir(1000, 4999, 'BRONZE', '8%')" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-[10px] mb-2"><span>PLANO BRONZE</span> <span class="binance-yellow text-xs">8% DIA</span></div>
+                <p class="text-2xl font-black text-white">1000 - 4999 <span class="text-xs text-gray-500">USDT</span></p>
             </div>
-            <div onclick="abrirPg('ELITE (10%)', 5000, 100000)" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer transition shadow-md">
-                <div class="flex justify-between font-bold text-xs mb-3 text-gray-400"><span>ELITE</span> <span class="binance-yellow">10% DIA</span></div>
-                <p class="text-2xl font-black">5000+ <span class="text-xs font-normal">USDT</span></p>
+            <div onclick="abrirInvestir(5000, 1000000, 'ELITE', '10%')" class="card-dark p-5 border-b-2 border-transparent hover:border-yellow-500 cursor-pointer">
+                <div class="flex justify-between font-bold text-[10px] mb-2"><span>PLANO ELITE</span> <span class="binance-yellow text-xs">10% DIA</span></div>
+                <p class="text-2xl font-black text-white">5000+ <span class="text-xs text-gray-500">USDT</span></p>
             </div>
         </div>
 
-        <div class="card-dark p-6 text-[10px] text-gray-400 space-y-2 uppercase italic leading-relaxed text-center border-t border-yellow-500/30">
-            <p>• Capital Retribuído após 180 Dias (25 Semanas)</p>
-            <p>• Bónus de Convite: 2% Individual | 5% Equipa (5+ membros)</p>
-            <p>• Levantamentos processados apenas às Sextas-feiras</p>
+        <div class="card-dark p-6 text-[10px] text-gray-400 space-y-3 uppercase italic leading-relaxed">
+            <p class="flex items-center gap-2"><i class="fas fa-info-circle binance-yellow"></i> Valor será retribuído após 180 dias (25 semanas)</p>
+            <p class="flex items-center gap-2"><i class="fas fa-calendar-alt binance-yellow"></i> Saques apenas nas sextas-feiras</p>
+            <p class="flex items-center gap-2"><i class="fas fa-users binance-yellow"></i> Bônus de convite de 2% e 5% para equipe com 5 membros</p>
         </div>
     </main>
 
-    <div id="modal-pg" class="hidden-section fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-6 text-center">
-        <div class="card-dark p-8 w-full max-w-sm">
-            <h3 class="binance-yellow font-black mb-2 uppercase" id="pgNomePlano"></h3>
-            <p class="text-[10px] text-gray-500 mb-6 uppercase">Indique o valor que deseja investir</p>
-            <input type="number" id="pgValor" placeholder="Valor em USDT" class="input-style mb-6 text-center text-xl font-bold">
-            <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Envie para o Endereço BEP20:</p>
-            <code class="text-yellow-500 text-[11px] block mb-8 bg-black p-4 rounded-lg break-all border border-gray-800">0xca70ef9db0233fef4449d9517c20f7bd21871b6f</code>
-            <button onclick="confirmarDeposito()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs shadow-lg">Confirmar Pagamento</button>
-            <button onclick="fecharModais()" class="mt-4 text-gray-600 text-[10px] font-bold uppercase tracking-widest">Cancelar</button>
+    <div id="modal-inv" class="hidden-section fixed inset-0 bg-black/98 z-50 flex items-center justify-center p-6 text-center">
+        <div class="card-dark p-8 w-full max-w-sm border border-yellow-500">
+            <h3 class="binance-yellow font-black text-lg mb-4 uppercase" id="invNome"></h3>
+            <p class="text-[10px] text-gray-500 mb-4 uppercase">Introduza o valor a investir:</p>
+            <input type="number" id="invValor" placeholder="Valor USDT" class="input-style mb-6 text-center text-xl font-bold">
+            <div id="dados-pagamento" class="hidden-section animate-pulse">
+                <p class="text-[10px] text-white mb-2 uppercase font-bold">Envie para este endereço (BEP20):</p>
+                <code class="text-yellow-500 text-[10px] block mb-6 bg-black p-3 rounded select-all font-mono">0xca70ef9db0233fef4449d9517c20f7bd21871b6f</code>
+                <button onclick="confirmarPagamento()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Confirmar Pagamento</button>
+            </div>
+            <button id="btn-prosseguir" onclick="prosseguirPagamento()" class="w-full binance-bg text-black font-black py-4 rounded-lg uppercase text-xs">Prosseguir</button>
+            <button onclick="fecharModais()" class="mt-4 text-gray-600 text-[10px] uppercase font-bold block w-full text-center">Cancelar</button>
         </div>
     </div>
 
-    <main id="dash-admin" class="hidden-section p-6 w-full max-w-7xl mx-auto pb-20">
-        <div class="flex justify-between items-center mb-8 border-b border-yellow-500 pb-4">
-            <h1 class="text-xl font-black binance-yellow italic uppercase">Administrador Master</h1>
-            <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded font-bold text-[10px]">SAIR DO PAINEL</button>
+    <main id="dash-admin" class="hidden-section p-6 w-full max-w-7xl mx-auto flex-grow">
+        <div class="flex justify-between items-center mb-10 border-b border-yellow-500 pb-4">
+            <div>
+                <h2 class="text-2xl font-black binance-yellow italic uppercase">Administrador Master</h2>
+                <p class="text-[10px] text-gray-500 uppercase">Gestão Centralizada Counter Money</p>
+            </div>
+            <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-[10px] font-bold uppercase transition">Sair do Sistema</button>
         </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="card-dark p-5"><h3 class="text-xs font-bold text-blue-400 mb-5 uppercase italic">Aguardando Depósito</h3><div id="adm-depositos" class="space-y-4"></div></div>
-            <div class="card-dark p-5"><h3 class="text-xs font-bold text-green-400 mb-5 uppercase italic">Pedidos de Saque</h3><div id="adm-saques" class="space-y-4"></div></div>
-            <div class="card-dark p-5"><h3 class="text-xs font-bold text-yellow-500 mb-5 uppercase italic">Suporte e Mensagens</h3><div id="adm-mensagens" class="space-y-4"></div></div>
+            <div class="card-dark p-5">
+                <h3 class="text-[11px] font-black uppercase mb-6 text-blue-400 flex items-center gap-2"><i class="fas fa-wallet"></i> Depósitos e Novos Membros</h3>
+                <div id="adm-pedidos" class="space-y-4"></div>
+            </div>
+            <div class="card-dark p-5">
+                <h3 class="text-[11px] font-black uppercase mb-6 text-green-400 flex items-center gap-2"><i class="fas fa-money-bill-wave"></i> Levantamentos Solicitados</h3>
+                <div id="adm-saques" class="space-y-4"></div>
+            </div>
+            <div class="card-dark p-5">
+                <h3 class="text-[11px] font-black uppercase mb-6 text-yellow-500 flex items-center gap-2"><i class="fas fa-comments"></i> Mensagens de Suporte</h3>
+                <div id="adm-mensagens" class="space-y-6"></div>
+            </div>
         </div>
     </main>
 
     <div id="modal-suporte" class="hidden-section fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-6">
         <div class="card-dark p-6 w-full max-w-sm">
-            <h3 class="binance-yellow font-black text-xs uppercase mb-4 italic text-center">Suporte Counter Money</h3>
-            <div id="chat-box" class="chat-box mb-4 space-y-2"></div>
+            <h3 class="binance-yellow font-black text-xs uppercase mb-4 italic text-center">Suporte Directo</h3>
+            <div id="chat-user-box" class="chat-container mb-4"></div>
             <div class="flex gap-2">
-                <input type="text" id="chat-input" placeholder="Escreva aqui..." class="input-style py-2 text-xs">
-                <button onclick="enviarMensagem()" class="binance-bg text-black px-5 rounded-lg"><i class="fas fa-paper-plane"></i></button>
+                <input type="text" id="user-msg-input" placeholder="Digite sua dúvida..." class="input-style py-2 text-xs">
+                <button onclick="enviarMensagemUser()" class="binance-bg text-black px-4 rounded-lg"><i class="fas fa-paper-plane"></i></button>
             </div>
-            <button onclick="fecharModais()" class="w-full mt-4 text-gray-600 text-[10px] font-bold uppercase">Fechar</button>
+            <button onclick="fecharModais()" class="w-full mt-4 text-gray-600 text-[9px] uppercase font-bold">Fechar Suporte</button>
         </div>
     </div>
 
-    <footer class="p-8 text-center mt-auto"><span onclick="acessoAdmin()" class="text-gray-900 text-[11px] cursor-pointer">2020</span></footer>
+    <footer class="p-8 text-center mt-auto">
+        <span onclick="entrarAdmin()" class="text-gray-900 text-[12px] cursor-pointer font-bold select-none">2020</span>
+    </footer>
 
     <script>
-        // CONFIGURAÇÃO FIREBASE
+        // CONFIGURAÇÃO DO SEU FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBjPC6owE_uk3EixNUyqNCCHfrCklOIO7U",
             authDomain: "countermoneyamerican.firebaseapp.com",
@@ -155,198 +173,224 @@
             appId: "1:779330695552:web:0791551d89567d189e9165"
         };
         firebase.initializeApp(firebaseConfig);
-        const rdb = firebase.database();
+        const rtdb = firebase.database();
 
-        let loggedUser = null;
+        let sessaoUser = null;
 
-        function aba(t) {
+        // FUNÇÕES DE ENTRADA
+        function mudarAba(t) {
             document.getElementById('form-login').classList.toggle('hidden-section', t !== 'login');
             document.getElementById('form-cad').classList.toggle('hidden-section', t !== 'cadastro');
-            document.getElementById('btn-aba-login').className = t === 'login' ? "flex-1 py-3 rounded-md binance-bg text-black" : "flex-1 py-3 rounded-md text-gray-500";
-            document.getElementById('btn-aba-cad').className = t === 'cadastro' ? "flex-1 py-3 rounded-md binance-bg text-black" : "flex-1 py-3 rounded-md text-gray-500";
+            document.getElementById('btn-aba-login').className = t === 'login' ? 'flex-1 py-3 rounded-md binance-bg text-black' : 'flex-1 py-3 rounded-md text-gray-500';
+            document.getElementById('btn-aba-cad').className = t === 'cadastro' ? 'flex-1 py-3 rounded-md binance-bg text-black' : 'flex-1 py-3 rounded-md text-gray-500';
         }
 
-        function cadastrar() {
-            const n = document.getElementById('cNome').value, t = document.getElementById('cTel').value, p = document.getElementById('cPass').value, pc = document.getElementById('cPassConf').value;
-            if(!n || !t || !p || !pc) return alert("Preencha todos os campos!");
-            if(p !== pc) return alert("As palavras-passe não coincidem!");
-            
-            rdb.ref('users/' + t).once('value', s => {
+        function registrar() {
+            const n = document.getElementById('cNome').value, t = document.getElementById('cTel').value, 
+                  p = document.getElementById('cPass').value, cp = document.getElementById('cPassConf').value;
+            if(!n || !t || !p) return alert("Preencha todos os campos!");
+            if(p !== cp) return alert("As palavras-passe não coincidem!");
+
+            rtdb.ref('users/' + t).once('value', s => {
                 if(s.exists()) return alert("Este número já está registado!");
-                rdb.ref('users/' + t).set({ nome: n, tel: t, pass: p, saldo: 0, carteira: "" }).then(() => {
-                    alert("Conta criada com sucesso!"); location.reload();
-                });
+                rtdb.ref('users/' + t).set({ nome: n, tel: t, pass: p, saldo: 0, status: 'Ativo' })
+                .then(() => { alert("Conta criada com sucesso!"); location.reload(); });
             });
         }
 
-        function logar() {
+        function login() {
             const t = document.getElementById('lTel').value, p = document.getElementById('lPass').value;
-            rdb.ref('users/' + t).once('value', s => {
+            rtdb.ref('users/' + t).once('value', s => {
                 const u = s.val();
                 if(u && u.pass === p) {
-                    loggedUser = u;
-                    abrirDashboard();
-                } else { alert("Telefone ou palavra-passe incorretos!"); }
+                    sessaoUser = u;
+                    document.getElementById('tela-entrada').classList.add('hidden-section');
+                    document.getElementById('dash-user').classList.remove('hidden-section');
+                    atualizarInterfaceUser();
+                } else { alert("Telefone ou Palavra-passe incorretos!"); }
             });
         }
 
-        function abrirDashboard() {
-            document.getElementById('tela-entrada').classList.add('hidden-section');
-            document.getElementById('dash-user').classList.remove('hidden-section');
-            document.getElementById('uNome').innerText = loggedUser.nome;
-            document.getElementById('uSaldo').innerText = parseFloat(loggedUser.saldo).toFixed(2);
-            document.getElementById('uLink').innerText = window.location.href.split('?')[0] + "?ref=" + loggedUser.tel;
-            escutarDados();
-        }
-
-        function escutarDados() {
-            rdb.ref('users/' + loggedUser.tel).on('value', s => {
-                const d = s.val();
-                document.getElementById('uSaldo').innerText = parseFloat(d.saldo).toFixed(2);
+        function atualizarInterfaceUser() {
+            rtdb.ref('users/' + sessaoUser.tel).on('value', s => {
+                const u = s.val();
+                document.getElementById('uNome').innerText = u.nome;
+                document.getElementById('uSaldo').innerText = parseFloat(u.saldo).toFixed(2);
+                document.getElementById('uLink').innerText = window.location.origin + window.location.pathname + "?ref=" + u.tel;
+                renderizarMensagensUser(u.chat);
             });
-            renderChat();
         }
 
-        function abrirPg(nome, min, max) {
-            window.activeMin = min; window.activeNome = nome;
-            document.getElementById('pgNomePlano').innerText = "Pacote " + nome;
-            document.getElementById('modal-pg').classList.remove('hidden-section');
+        // INVESTIMENTO
+        function abrirInvestir(min, max, nome, perc) {
+            window.planoAtual = { min, max, nome };
+            document.getElementById('invNome').innerText = "PLANO " + nome + " (" + perc + ")";
+            document.getElementById('modal-inv').classList.remove('hidden-section');
+            document.getElementById('dados-pagamento').classList.add('hidden-section');
+            document.getElementById('btn-prosseguir').classList.remove('hidden-section');
         }
 
-        function confirmarDeposito() {
-            const v = document.getElementById('pgValor').value;
-            if(v < window.activeMin) return alert("O valor mínimo para este pacote é " + window.activeMin + " USDT");
-            rdb.ref('depositos_pendentes').push({
-                nome: loggedUser.nome, tel: loggedUser.tel, valor: v, plano: window.activeNome, data: new Date().toLocaleString()
+        function prosseguirPagamento() {
+            const val = document.getElementById('invValor').value;
+            if(val < window.planoAtual.min) return alert("O valor mínimo para este plano é " + window.planoAtual.min + " USDT");
+            document.getElementById('dados-pagamento').classList.remove('hidden-section');
+            document.getElementById('btn-prosseguir').classList.add('hidden-section');
+        }
+
+        function confirmarPagamento() {
+            const val = document.getElementById('invValor').value;
+            rtdb.ref('pedidos_deposito').push({
+                userTel: sessaoUser.tel,
+                userName: sessaoUser.nome,
+                valor: val,
+                plano: window.planoAtual.nome,
+                data: new Date().toLocaleString()
             });
-            alert("Aguardando confirmação do Administrador. O saldo será creditado assim que o pagamento for validado.");
+            alert("Aviso enviado! O administrador irá validar e ativar os seus lucros.");
             fecharModais();
         }
 
-        function solicitarSaque() {
+        // SAQUE
+        function pedirSaque() {
             const w = document.getElementById('uWallet').value;
-            const s = parseFloat(document.getElementById('uSaldo').innerText);
-            if(!w) return alert("Insira o seu endereço BEP20!");
-            if(s <= 0) return alert("Não tem saldo disponível para saque!");
-            rdb.ref('saques_pendentes').push({
-                nome: loggedUser.nome, tel: loggedUser.tel, valor: s, carteira: w, data: new Date().toLocaleString()
+            const saldo = parseFloat(document.getElementById('uSaldo').innerText);
+            if(!w) return alert("Introduza a sua carteira BEP20!");
+            if(saldo <= 0) return alert("Não tem saldo disponível para levantamento!");
+            
+            rtdb.ref('pedidos_saque').push({
+                userTel: sessaoUser.tel,
+                userName: sessaoUser.nome,
+                valor: saldo,
+                wallet: w
             });
-            alert("Pedido de levantamento enviado! Será processado na próxima sexta-feira.");
+            rtdb.ref('users/' + sessaoUser.tel).update({ saldo: 0 });
+            alert("Pedido de levantamento enviado com sucesso!");
         }
 
-        function copiarLink() {
-            navigator.clipboard.writeText(document.getElementById('uLink').innerText);
-            alert("Link de convite copiado!");
-        }
-
-        // SUPORTE
-        function enviarMensagem() {
-            const txt = document.getElementById('chat-input').value;
+        // CHAT USER
+        function enviarMensagemUser() {
+            const txt = document.getElementById('user-msg-input').value;
             if(!txt) return;
-            rdb.ref('chats/' + loggedUser.tel).push({ de: 'u', txt: txt, data: Date.now() });
-            document.getElementById('chat-input').value = "";
+            const msg = { de: 'u', texto: txt, hora: new Date().toLocaleTimeString() };
+            rtdb.ref('users/' + sessaoUser.tel + '/chat').push(msg);
+            document.getElementById('user-msg-input').value = "";
         }
 
-        function renderChat() {
-            rdb.ref('chats/' + loggedUser.tel).on('value', s => {
-                const msgs = s.val();
-                const box = document.getElementById('chat-box');
-                box.innerHTML = "";
-                if(msgs) {
-                    Object.values(msgs).forEach(m => {
-                        box.innerHTML += `<div class="p-2 rounded ${m.de === 'u' ? 'bg-yellow-500/10 text-yellow-500 ml-4' : 'bg-gray-700 text-white mr-4'}">
-                            <b>${m.de === 'u' ? 'Eu' : 'Admin'}:</b> ${m.txt}
-                        </div>`;
-                    });
-                }
-                box.scrollTop = box.scrollHeight;
-            });
+        function renderizarMensagensUser(chat) {
+            const box = document.getElementById('chat-user-box');
+            if(!chat) { box.innerHTML = "<p class='text-gray-600 text-center mt-4'>Inicie uma conversa com o suporte.</p>"; return; }
+            box.innerHTML = Object.values(chat).map(m => `
+                <div class="mb-3 ${m.de === 'u' ? 'text-right' : 'text-left'}">
+                    <span class="p-2 rounded inline-block ${m.de === 'u' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-gray-700 text-white'}">
+                        ${m.texto}
+                        <br><small class="opacity-50 text-[8px]">${m.hora}</small>
+                    </span>
+                </div>
+            `).join('');
+            box.scrollTop = box.scrollHeight;
         }
 
-        // ADMIN
-        function acessoAdmin() {
-            const p = prompt("Código de Acesso:");
-            if(p === "admin123") {
+        // ADMINISTRAÇÃO MASTER
+        function entrarAdmin() {
+            if(prompt("Senha de Acesso Master:") === "admin123") {
                 document.getElementById('tela-entrada').classList.add('hidden-section');
-                document.getElementById('dash-user').classList.add('hidden-section');
                 document.getElementById('dash-admin').classList.remove('hidden-section');
                 carregarAdmin();
             }
         }
 
         function carregarAdmin() {
-            // Depósitos
-            rdb.ref('depositos_pendentes').on('value', s => {
-                const deps = s.val();
-                const area = document.getElementById('adm-depositos');
+            // Escutar Depósitos
+            rtdb.ref('pedidos_deposito').on('value', s => {
+                const area = document.getElementById('adm-pedidos');
                 area.innerHTML = "";
-                if(deps) {
-                    Object.entries(deps).forEach(([id, d]) => {
-                        area.innerHTML += `<div class="bg-black p-3 border border-gray-800 text-[10px]">
-                            ${d.nome} (${d.tel})<br>Valor: <b>${d.valor} USDT</b><br>Plano: ${d.plano}
-                            <button onclick="aprovarDep('${id}', '${d.tel}', ${d.valor})" class="w-full bg-blue-600 mt-2 py-1 rounded">Aprovar e Ativar</button>
-                        </div>`;
-                    });
-                }
+                s.forEach(item => {
+                    const p = item.val();
+                    area.innerHTML += `
+                        <div class="bg-black p-4 border border-gray-800 rounded-lg">
+                            <p class="text-white font-bold text-xs uppercase">${p.userName}</p>
+                            <p class="text-[10px] text-gray-400">Plano: ${p.plano} | Valor: ${p.valor} USDT</p>
+                            <button onclick="aprovarDeposito('${item.key}', '${p.userTel}')" class="w-full bg-blue-600 text-white py-2 rounded mt-3 text-[10px] font-bold uppercase">Confirmar e Ativar Lucro</button>
+                        </div>
+                    `;
+                });
             });
 
-            // Saques
-            rdb.ref('saques_pendentes').on('value', s => {
-                const saqs = s.val();
+            // Escutar Saques
+            rtdb.ref('pedidos_saque').on('value', s => {
                 const area = document.getElementById('adm-saques');
                 area.innerHTML = "";
-                if(saqs) {
-                    Object.entries(saqs).forEach(([id, sa]) => {
-                        area.innerHTML += `<div class="bg-black p-3 border border-green-900 text-[10px]">
-                            Membro: ${sa.nome}<br>Valor: <b>${sa.valor} USDT</b><br>Carteira: <span class="binance-yellow">${sa.carteira}</span><br>Tel: ${sa.tel}
-                            <button onclick="confirmarPago('${id}', '${sa.tel}')" class="w-full bg-green-600 mt-2 py-1 rounded">Marcar como Pago</button>
-                        </div>`;
-                    });
-                }
+                s.forEach(item => {
+                    const p = item.val();
+                    area.innerHTML += `
+                        <div class="bg-black p-4 border border-green-900 rounded-lg">
+                            <p class="text-white font-bold text-xs uppercase">${p.userName}</p>
+                            <p class="text-[10px] text-yellow-500 font-mono select-all">WALLET: ${p.wallet}</p>
+                            <p class="text-lg font-black text-green-400 my-2">${p.valor} USDT</p>
+                            <button onclick="concluirSaque('${item.key}')" class="w-full bg-green-600 text-white py-2 rounded text-[10px] font-bold uppercase tracking-widest">Marcar como Pago</button>
+                        </div>
+                    `;
+                });
             });
 
-            // Mensagens
-            rdb.ref('chats').on('value', s => {
-                const chats = s.val();
+            // Escutar Mensagens (Individualizadas)
+            rtdb.ref('users').on('value', s => {
                 const area = document.getElementById('adm-mensagens');
                 area.innerHTML = "";
-                if(chats) {
-                    Object.entries(chats).forEach(([tel, msgs]) => {
-                        area.innerHTML += `<div class="bg-black p-3 border border-yellow-900">
-                            <p class="text-[10px] font-bold binance-yellow">Membro: ${tel}</p>
-                            <div class="flex gap-2 mt-2">
-                                <input id="rep-${tel}" type="text" placeholder="Resposta..." class="input-style py-1 text-[10px]">
-                                <button onclick="adminResponder('${tel}')" class="bg-yellow-600 px-3 rounded">OK</button>
+                s.forEach(userItem => {
+                    const u = userItem.val();
+                    if(u.chat) {
+                        const ultMsg = Object.values(u.chat).pop();
+                        area.innerHTML += `
+                            <div class="bg-black p-4 border border-yellow-900 rounded-lg">
+                                <p class="text-yellow-500 font-bold text-xs uppercase mb-2">${u.nome} (${u.tel})</p>
+                                <div class="chat-container h-32 mb-3 bg-gray-900">
+                                    ${Object.values(u.chat).map(m => `<div class="mb-1 text-[9px] ${m.de === 'a' ? 'text-green-400' : 'text-white'}"><b>${m.de==='a'?'Admin':'User'}:</b> ${m.texto}</div>`).join('')}
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="ans-${u.tel}" placeholder="Resposta..." class="input-style py-2 text-[10px]">
+                                    <button onclick="responderAdmin('${u.tel}')" class="bg-yellow-600 px-4 rounded text-black font-bold text-xs">OK</button>
+                                </div>
                             </div>
-                        </div>`;
-                    });
-                }
+                        `;
+                    }
+                });
             });
         }
 
-        function aprovarDep(id, tel, valor) {
-            const lucro = prompt("Depósito de " + valor + " confirmado. Quanto de lucro/saldo deseja creditar agora?");
-            rdb.ref('users/' + tel + '/saldo').transaction(atual => (parseFloat(atual || 0) + parseFloat(lucro || 0)));
-            rdb.ref('depositos_pendentes/' + id).remove();
+        function aprovarDeposito(key, tel) {
+            const lucro = prompt("Depósito confirmado! Quanto deseja adicionar ao saldo do investidor agora (Lucro da Sexta)?");
+            if(lucro === null) return;
+            rtdb.ref('users/' + tel).once('value', s => {
+                const novoSaldo = (parseFloat(s.val().saldo || 0) + parseFloat(lucro)).toFixed(2);
+                rtdb.ref('users/' + tel).update({ saldo: novoSaldo });
+                rtdb.ref('pedidos_deposito/' + key).remove();
+                alert("Sucesso! O investidor já pode ver o novo saldo.");
+            });
         }
 
-        function confirmarPago(id, tel) {
-            rdb.ref('users/' + tel + '/saldo').set(0);
-            rdb.ref('saques_pendentes/' + id).remove();
-            alert("Saque processado e saldo zerado no sistema.");
+        function concluirSaque(key) {
+            rtdb.ref('pedidos_saque/' + key).remove();
+            alert("Levantamento concluído e removido da lista.");
         }
 
-        function adminResponder(tel) {
-            const txt = document.getElementById('rep-' + tel).value;
+        function responderAdmin(tel) {
+            const txt = document.getElementById('ans-'+tel).value;
             if(!txt) return;
-            rdb.ref('chats/' + tel).push({ de: 'a', txt: txt, data: Date.now() });
-            document.getElementById('rep-' + tel).value = "";
+            rtdb.ref('users/' + tel + '/chat').push({ de: 'a', texto: txt, hora: new Date().toLocaleTimeString() });
+            document.getElementById('ans-'+tel).value = "";
         }
 
+        // AUXILIARES
         function abrirSuporte() { document.getElementById('modal-suporte').classList.remove('hidden-section'); }
         function fecharModais() { 
-            document.getElementById('modal-pg').classList.add('hidden-section'); 
+            document.getElementById('modal-inv').classList.add('hidden-section'); 
             document.getElementById('modal-suporte').classList.add('hidden-section'); 
+        }
+        function copiarLink() {
+            const link = document.getElementById('uLink').innerText;
+            navigator.clipboard.writeText(link);
+            alert("Link de convite copiado!");
         }
     </script>
 </body>
